@@ -1,6 +1,6 @@
 package com.xyt.utils;
 
-import com.xyt.fileupload.model.EmailEntity;
+import com.xyt.email.model.EmailEntity;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
