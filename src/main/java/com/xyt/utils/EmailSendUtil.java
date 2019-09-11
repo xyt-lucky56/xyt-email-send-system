@@ -40,23 +40,23 @@ public class EmailSendUtil {
     public static void main(String[] args) throws EmailException {
         EmailEntity ee = new EmailEntity();
 
-        ee.setEmailContent("<input type='button' value='提交' />");
-        ee.setEmailFrom("yanzhi@fengunion.com");
+        ee.setEmailContent("测试邮件发送");
+        ee.setEmailFrom("zjz@lucky56.com.cn");
         ee.setEmailSubject("武汉信运通信息产业有限公司平台注册成功");
         // ee.setEmailTo("zhanggongyuan@fengunion.com");
-        ee.setEmailUserName("yanzhi@fengunion.com");
-        ee.setPassWord("123456Qw");
-        ee.setHostName("smtp.fengunion.com");
+        ee.setEmailUserName("zjz@lucky56.com.cn");
+        ee.setPassWord("felix2009");
+        ee.setHostName("smtp.exmail.qq.com");
         List<InternetAddress> list = new ArrayList<InternetAddress>();
         try {
-            list.add(new InternetAddress("zhanggongyuan@fengunion.com"));
-            list.add(new InternetAddress("zhoupan@fengunion.com"));
+            list.add(new InternetAddress("yangkai@lucky56.com.cn"));
+            list.add(new InternetAddress("liumenghui@lucky56.com.cn"));
         } catch (AddressException e) {
             e.printStackTrace();
         }
         ee.setEmailToUsers(list);
 
-        System.out.println(sendHtmlEmail(ee));
+        System.out.println(sendHtmlEmailToUsers(ee));
     }
 
     /**
