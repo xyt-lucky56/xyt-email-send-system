@@ -2,6 +2,7 @@ package com.xyt.email.service.impl;
 
 import com.xyt.common.base.BaseServiceImpl;
 import com.xyt.email.dao.SysEmailSendRecordMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.xyt.email.service.SysEmailSendRecordService;
@@ -13,7 +14,7 @@ import com.xyt.email.model.SysEmailSendRecord;
  * @category 邮件记录表
  * @since 2019/09/10
  */
-@Service
+@Service("sysEmailSendRecordService")
 public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendRecordMapper, SysEmailSendRecord> implements SysEmailSendRecordService {
 
     @Value("${email.from}")
@@ -24,4 +25,6 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
     private String emailPassword;
     @Value("${email.hostname}")
     private String emailHostname;
+    @Autowired
+    private SysEmailSendRecordMapper  sysEmailSendRecordMapper;
 }
