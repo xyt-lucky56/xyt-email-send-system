@@ -40,12 +40,12 @@ public class EmailSendUtil {
     public static void main(String[] args) throws EmailException {
         EmailEntity ee = new EmailEntity();
 
-        ee.setEmailContent("测试邮件发送");
-        ee.setEmailFrom("zjz@lucky56.com.cn");
+        ee.setEmailContent("测试邮件发送33");
+        ee.setEmailFrom("ceshi@lucky56.com.cn");
         ee.setEmailSubject("武汉信运通信息产业有限公司平台注册成功");
         // ee.setEmailTo("zhanggongyuan@fengunion.com");
-        ee.setEmailUserName("zjz@lucky56.com.cn");
-        ee.setPassWord("felix2009");
+        ee.setEmailUserName("ceshi@lucky56.com.cn");
+        ee.setPassWord("Xyt168168");
         ee.setHostName("smtp.exmail.qq.com");
         List<InternetAddress> list = new ArrayList<InternetAddress>();
         try {
