@@ -1,6 +1,7 @@
 package com.xyt.utils;
 
 import com.xyt.email.model.EmailEntity;
+import com.xyt.email.service.SysEmailSendRecordService;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -9,6 +10,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -37,9 +39,8 @@ public class EmailSendUtil {
 
     private static final String INVITATION_MESSAGE_TEMPLATE = "尊敬的{0}，{1}已经向您发出邀请，请通过下面网址进行确认邀请。【{2}】";
 
-    public static void main(String[] args) throws EmailException {
+    public static void main(String[] args) throws Exception {
         EmailEntity ee = new EmailEntity();
-
         ee.setEmailContent("测试邮件发送33");
         ee.setEmailFrom("ceshi@lucky56.com.cn");
         ee.setEmailSubject("武汉信运通信息产业有限公司平台注册成功");
@@ -55,8 +56,15 @@ public class EmailSendUtil {
             e.printStackTrace();
         }
         ee.setEmailToUsers(list);
-
-        System.out.println(sendHtmlEmailToUsers(ee));
+        try{
+            sendHtmlEmailToUsers(ee);
+            ee.setSendStatus(1);
+            System.out.println("成功");
+        }catch (EmailException ex){
+            ee.setErrorMsg(ex.toString());
+            ee.setSendStatus(0);
+            System.out.println(ex);
+        }
     }
 
     /**

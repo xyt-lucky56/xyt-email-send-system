@@ -2,6 +2,7 @@ package com.xyt.email.service;
 
 
 import com.xyt.common.base.BaseService;
+import com.xyt.email.model.EmailEntity;
 import com.xyt.email.model.SysEmailSendRecord;
 
 /**
@@ -11,5 +12,10 @@ import com.xyt.email.model.SysEmailSendRecord;
  * @category 文件表
  */
 public interface SysEmailSendRecordService extends BaseService<SysEmailSendRecord> {
-
+    /**
+     * 保存发送邮件日志到数据库
+     * @param emailEntity 接收人信息
+     * @return
+     */
+    void saveLog(EmailEntity emailEntity) throws Exception;
 }

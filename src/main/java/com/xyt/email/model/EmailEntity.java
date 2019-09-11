@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.List;
 
 public class EmailEntity {
-
+    public  static final String mail_password_type="0";
     /**
      * 收件人
      */
@@ -48,6 +48,26 @@ public class EmailEntity {
      * 邮件附件
      */
     private List<File> attachFiles;
+    //发送状态 0:失败  1:成功
+    private Integer sendStatus;
+    //错误信息
+    private String errorMsg;
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
+    }
 
     public String getEmailTo() {
         return emailTo;
