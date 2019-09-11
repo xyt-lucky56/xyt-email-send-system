@@ -4,13 +4,15 @@ import com.xyt.common.base.BaseServiceImpl;
 import com.xyt.common.base.utils.StringUtils;
 import com.xyt.email.dao.SysEmailSendRecordMapper;
 import com.xyt.email.model.EmailEntity;
+import com.xyt.email.model.SysEmailSendRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.xyt.email.service.SysEmailSendRecordService;
-import com.xyt.email.model.SysEmailSendRecord;
+
 import javax.mail.internet.InternetAddress;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author copyright by 武汉信运通信息产业有限公司
@@ -35,7 +37,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
     public void saveLog(EmailEntity emailEntity) throws Exception {
         if(StringUtils.isNotBlank(emailEntity.getEmailTo())){
             SysEmailSendRecord sysEmailSendRecord=new SysEmailSendRecord();
-            sysEmailSendRecord.setMailType(EmailEntity.mail_password_type);
+            sysEmailSendRecord.setId(UUID.randomUUID().toString());
             sysEmailSendRecord.setMailSubject(emailEntity.getEmailSubject());
             sysEmailSendRecord.setMailContent(emailEntity.getEmailContent());
             sysEmailSendRecord.setMailFrom(emailFrom);
@@ -43,13 +45,12 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
             sysEmailSendRecord.setSendStatus(emailEntity.getSendStatus());
             sysEmailSendRecord.setSendTimes(1);
             sysEmailSendRecord.setErrorMsg(emailEntity.getErrorMsg());
-            sysEmailSendRecord.setCreateTime(new Date());
-            sysEmailSendRecord.setCreateName(emailUsername);
+            sysEmailSendRecord.setWorkDate(new Date());
             sysEmailSendRecordMapper.insertSelective(sysEmailSendRecord);
         }else if(emailEntity.getEmailToUsers()!=null&&emailEntity.getEmailToUsers().size()>0){
             for(InternetAddress internetAddress:emailEntity.getEmailToUsers()){
                 SysEmailSendRecord sysEmailSendRecord=new SysEmailSendRecord();
-                sysEmailSendRecord.setMailType(EmailEntity.mail_password_type);
+                sysEmailSendRecord.setId(UUID.randomUUID().toString());
                 sysEmailSendRecord.setMailSubject(emailEntity.getEmailSubject());
                 sysEmailSendRecord.setMailContent(emailEntity.getEmailContent());
                 sysEmailSendRecord.setMailFrom(emailFrom);
@@ -57,8 +58,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
                 sysEmailSendRecord.setSendStatus(emailEntity.getSendStatus());
                 sysEmailSendRecord.setSendTimes(1);
                 sysEmailSendRecord.setErrorMsg(emailEntity.getErrorMsg());
-                sysEmailSendRecord.setCreateTime(new Date());
-                sysEmailSendRecord.setCreateName(emailUsername);
+                sysEmailSendRecord.setWorkDate(new Date());
                 sysEmailSendRecordMapper.insertSelective(sysEmailSendRecord);
             }
         }else {

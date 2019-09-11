@@ -4,38 +4,28 @@
 	
 	<resultMap id="rm" type="com.xyt.email.model.SysEmailSendRecord">
 		<result property="id" jdbcType="VARCHAR" column="id" />
-		<result property="mailType" jdbcType="VARCHAR" column="mail_type" />
-		<result property="mailSubject" jdbcType="VARCHAR" column="mail_subject" />
-		<result property="mailContent" jdbcType="LONGVARCHAR" column="mail_content" />
-		<result property="mailFrom" jdbcType="VARCHAR" column="mail_from" />
-		<result property="mailTo" jdbcType="VARCHAR" column="mail_to" />
-		<result property="sendStatus" jdbcType="INTEGER" column="send_status" />
-		<result property="sendTimes" jdbcType="INTEGER" column="send_times" />
-		<result property="errorMsg" jdbcType="VARCHAR" column="error_msg" />
-		<result property="createName" jdbcType="VARCHAR" column="create_name" />
-		<result property="lastModifyId" jdbcType="VARCHAR" column="last_modify_id" />
-		<result property="lastModifyName" jdbcType="VARCHAR" column="last_modify_name" />
-		<result property="lastModifyTime" jdbcType="TIMESTAMP" column="last_modify_time" />
-		<result property="lastModifyIp" jdbcType="VARCHAR" column="last_modify_ip" />
-		<result property="valid" jdbcType="INTEGER" column="valid" />
+		<result property="mailTempleteId" jdbcType="VARCHAR" column="mailTempleteId" />
+		<result property="mailSubject" jdbcType="VARCHAR" column="mailSubject" />
+		<result property="mailContent" jdbcType="LONGVARCHAR" column="mailContent" />
+		<result property="mailFrom" jdbcType="VARCHAR" column="mailFrom" />
+		<result property="mailto" jdbcType="VARCHAR" column="mailTo" />
+		<result property="sendStatus" jdbcType="TINYINT" column="sendStatus" />
+		<result property="sendStatus" jdbcType="TINYINT" column="sendStatus" />
+		<result property="errorMsg" jdbcType="VARCHAR" column="errorMsg" />
+		<result property="workDate" jdbcType="TIMESTAMP" column="workDate" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
         	id,
-        	mail_type,
-        	mail_subject,
-        	mail_content,
-        	mail_from,
-        	mail_to,
-        	send_status,
-        	send_times,
-        	error_msg,
-        	create_name,
-        	last_modify_id,
-        	last_modify_name,
-        	last_modify_time,
-        	last_modify_ip,
-        	valid
+        	mailTempleteId,
+        	mailSubject,
+        	mailContent,
+        	mailFrom,
+        	mailTo,
+        	sendStatus,
+        	sendTimes,
+        	errorMsg,
+        	workDate
 	</sql>
 	
 		
@@ -45,44 +35,32 @@
 			<if test="id != null">
 				AND id = #{id}
 			</if>
-			<if test="mailType != null">
-				AND mail_type = #{mailType}
+			<if test="mailTempleteId != null">
+				AND mailTempleteId = #{mailTempleteId}
 			</if>
 			<if test="mailSubject != null">
-				AND mail_subject = #{mailSubject}
+				AND mailSubject = #{mailSubject}
 			</if>
 			<if test="mailContent != null">
-				AND mail_content = #{mailContent}
+				AND mailContent = #{mailContent}
 			</if>
 			<if test="mailFrom != null">
-				AND mail_from = #{mailFrom}
+				AND mailFrom = #{mailFrom}
 			</if>
 			<if test="mailTo != null">
-				AND mail_to = #{mailTo}
+				AND mailTo = #{mailTo}
 			</if>
 			<if test="sendStatus != null">
-				AND send_status = #{sendStatus}
+				AND sendStatus = #{sendStatus}
 			</if>
 			<if test="sendTimes != null">
-				AND send_times = #{sendTimes}
+				AND sendTimes = #{sendTimes}
 			</if>
 			<if test="errorMsg != null">
-				AND error_msg = #{errorMsg}
+				AND errorMsg = #{errorMsg}
 			</if>
-			<if test="createName != null">
-				AND create_name = #{createName}
-			</if>
-			<if test="lastModifyId != null">
-				AND last_modify_id = #{lastModifyId}
-			</if>
-			<if test="lastModifyName != null">
-				AND last_modify_name = #{lastModifyName}
-			</if>
-			<if test="lastModifyTime != null">
-				AND last_modify_time = #{lastModifyTime}
-			</if>
-			<if test="lastModifyIp != null">
-				AND last_modify_ip = #{lastModifyIp}
+			<if test="workDate != null">
+				AND workDate = #{workDate}
 			</if>
 		</where>
 	</sql>
