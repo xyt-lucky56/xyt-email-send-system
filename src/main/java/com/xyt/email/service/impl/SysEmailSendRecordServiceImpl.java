@@ -12,6 +12,7 @@ import com.xyt.email.service.SysEmailSendRecordService;
 
 import javax.mail.internet.InternetAddress;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -64,5 +65,29 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
         }else {
             throw new Exception("收件人信息不存在");
         }
+    }
+
+    @Override
+    public int deleteLog(String id) {
+        SysEmailSendRecord sysEmailSendRecord=new SysEmailSendRecord();
+        sysEmailSendRecord.setId(id);
+        return sysEmailSendRecordMapper.deleteByPrimaryKey(sysEmailSendRecord);
+    }
+
+    @Override
+    public SysEmailSendRecord getSendLog(String id) {
+        SysEmailSendRecord sysEmailSendRecord=new SysEmailSendRecord();
+        sysEmailSendRecord.setId(id);
+        return sysEmailSendRecordMapper.selectByPrimaryKey(sysEmailSendRecord);
+    }
+
+    @Override
+    public List<SysEmailSendRecord> getSendLogs() {
+        return sysEmailSendRecordMapper.selectAll();
+    }
+
+    @Override
+    public int updateById(SysEmailSendRecord sysEmailSendRecord) {
+        return sysEmailSendRecordMapper.updateByPrimaryKeySelective(sysEmailSendRecord);
     }
 }
