@@ -5,14 +5,13 @@ import com.xyt.email.model.SysEmailSendRecord;
 import com.xyt.email.service.SysEmailSendRecordService;
 import com.xyt.utils.EmailSendUtil;
 import org.apache.commons.mail.EmailException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.mail.internet.InternetAddress;
+import java.util.*;
 
 /**
  * @author lmh
@@ -21,6 +20,7 @@ import java.util.Map;
  */
 @RestController
 public class SysEmailSendRecordController {
+    private static final Logger logger=LoggerFactory.getLogger(SysEmailSendRecordController.class);
     @Autowired
     private SysEmailSendRecordService sysEmailSendRecordService;
 
@@ -33,30 +33,82 @@ public class SysEmailSendRecordController {
     @Value("${email.hostname}")
     private String emailHostname;
 
-    @PostMapping("/email/send")
-    public void sendEmail(String emailTo,String templateName)throws Exception{
+    @PostMapping("/email/sendToUser")
+    public void sendEmail(@RequestParam("emailToUser") String emailToUser,@RequestParam("templateName") String templateName)throws Exception{
         EmailEntity emailEntity=new EmailEntity();
-        emailEntity.setEmailTo(emailTo);
+        switch (templateName){
+            case "forgetPassword":
+                emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
+                break;
+            case "registerUser":
+                emailEntity.setEmailSubject(SysEmailSendRecord.registerUser);
+                break;
+            default:
+                break;
+        }
+        emailEntity.setEmailTo(emailToUser);
         Map map=new HashMap();
-        map.put("emaileTo",emailTo);
+        map.put("emaileTo",emailToUser);
         String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
         emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
         emailEntity.setEmailFrom(emailFrom);
         emailEntity.setEmailUserName(emailUsername);
         emailEntity.setHostName(emailHostname);
         emailEntity.setPassWord(emailPassword);
-//        目前没写subject
+        emailEntity.setMailTempleteId(templateName);
         try{
-            EmailSendUtil.sendHtmlEmailToUsers(emailEntity);
+            EmailSendUtil.sendHtmlEmail(emailEntity);
             emailEntity.setSendStatus(1);
-            System.out.println("成功");
+            logger.info("成功");
         }catch (EmailException ex){
             emailEntity.setErrorMsg(ex.toString());
             emailEntity.setSendStatus(0);
-            System.out.println(ex);
+            logger.info("失败,失败信息为{}",ex);
         }
         sysEmailSendRecordService.saveLog(emailEntity);
     }
+
+    @PostMapping("/email/sendToUsers")
+    public void sendEmails(@RequestParam("emailToUsers") List<String> emailToUsers,@RequestParam("templateName") String templateName)throws Exception{
+        EmailEntity emailEntity=new EmailEntity();
+        List<InternetAddress> addressList=new ArrayList<>();
+        InternetAddress internetAddress=new InternetAddress();
+        for(String address:emailToUsers){
+            internetAddress.setAddress(address);
+            addressList.add(internetAddress);
+        }
+        emailEntity.setEmailToUsers(addressList);
+        Map map=new HashMap();
+        map.put("emaileTo",emailToUsers);
+        String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
+        emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
+        emailEntity.setEmailFrom(emailFrom);
+        emailEntity.setEmailUserName(emailUsername);
+        emailEntity.setHostName(emailHostname);
+        emailEntity.setPassWord(emailPassword);
+        emailEntity.setMailTempleteId(templateName);
+        switch (templateName){
+            case "forgetPassword":
+                emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
+                break;
+            case "registerUser":
+                emailEntity.setEmailSubject(SysEmailSendRecord.registerUser);
+                break;
+            default:
+                break;
+        }
+        try{
+            EmailSendUtil.sendHtmlEmailToUsers(emailEntity);
+            emailEntity.setSendStatus(1);
+            logger.info("成功");
+        }catch (EmailException ex){
+            emailEntity.setErrorMsg(ex.toString());
+            emailEntity.setSendStatus(0);
+            logger.info("失败,失败信息为{}",ex);
+        }
+        sysEmailSendRecordService.saveLog(emailEntity);
+    }
+
 
     @GetMapping("/email/getSendLog")
     public SysEmailSendRecord getSendLog(String id){

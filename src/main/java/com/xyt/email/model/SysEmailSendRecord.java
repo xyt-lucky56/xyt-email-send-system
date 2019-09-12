@@ -17,6 +17,8 @@ import java.util.Date;
 @ApiModel("文件表")
 @Table(name = "sys_emailsendrecord")
 public class SysEmailSendRecord extends BaseEntity {
+	public static String forgetPassword="忘记密码";
+	public static String registerUser="注册提醒";
 
 	private static final long serialVersionUID = 1L;
 

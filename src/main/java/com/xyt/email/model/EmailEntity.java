@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.List;
 
 public class EmailEntity {
-    public  static final String mail_password_type="0";
     /**
      * 收件人
      */
@@ -52,6 +51,17 @@ public class EmailEntity {
     private Integer sendStatus;
     //错误信息
     private String errorMsg;
+
+    private String mailTempleteId;//邮件模板编号
+
+
+    public String getMailTempleteId() {
+        return mailTempleteId;
+    }
+
+    public void setMailTempleteId(String mailTempleteId) {
+        this.mailTempleteId = mailTempleteId;
+    }
 
     public String getErrorMsg() {
         return errorMsg;

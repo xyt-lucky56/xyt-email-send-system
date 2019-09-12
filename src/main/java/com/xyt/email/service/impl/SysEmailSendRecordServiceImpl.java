@@ -40,6 +40,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
             sysEmailSendRecord.setSendTimes(1);
             sysEmailSendRecord.setErrorMsg(emailEntity.getErrorMsg());
             sysEmailSendRecord.setWorkDate(new Date());
+            sysEmailSendRecord.setMailTempleteId(emailEntity.getMailTempleteId());
             sysEmailSendRecordMapper.insertSelective(sysEmailSendRecord);
         }else if(emailEntity.getEmailToUsers()!=null&&emailEntity.getEmailToUsers().size()>0){
             for(InternetAddress internetAddress:emailEntity.getEmailToUsers()){
@@ -53,6 +54,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
                 sysEmailSendRecord.setSendTimes(1);
                 sysEmailSendRecord.setErrorMsg(emailEntity.getErrorMsg());
                 sysEmailSendRecord.setWorkDate(new Date());
+                sysEmailSendRecord.setMailTempleteId(emailEntity.getMailTempleteId());
                 sysEmailSendRecordMapper.insertSelective(sysEmailSendRecord);
             }
         }else {

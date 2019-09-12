@@ -204,7 +204,7 @@ public class EmailSendUtil {
             configuration.setTemplateLoader(new ClassTemplateLoader(EmailSendUtil.class, TEMPLATE_PATH));
             configuration.setEncoding(Locale.getDefault(), "UTF-8");
             configuration.setDateFormat("yyyy-MM-dd HH:mm:ss");
-            Template template = configuration.getTemplate(templateName);
+            Template template = configuration.getTemplate(templateName+".ftl");
             StringWriter stringWriter = new StringWriter();
             template.process(map, stringWriter);
             return stringWriter.toString();
