@@ -36,9 +36,12 @@ public class SysEmailSendRecordController {
     @PostMapping("/email/sendToUser")
     public void sendEmail(@RequestParam("emailToUser") String emailToUser,@RequestParam("templateName") String templateName)throws Exception{
         EmailEntity emailEntity=new EmailEntity();
+        Map map=new HashMap();
+
         switch (templateName){
             case "forgetPassword":
                 emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
+                map.put("emaileTo",emailToUser);
                 break;
             case "registerUser":
                 emailEntity.setEmailSubject(SysEmailSendRecord.registerUser);
@@ -47,8 +50,6 @@ public class SysEmailSendRecordController {
                 break;
         }
         emailEntity.setEmailTo(emailToUser);
-        Map map=new HashMap();
-        map.put("emaileTo",emailToUser);
         String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
         emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
         emailEntity.setEmailFrom(emailFrom);
