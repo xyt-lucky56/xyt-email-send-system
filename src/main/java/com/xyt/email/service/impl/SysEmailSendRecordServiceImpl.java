@@ -24,14 +24,7 @@ import java.util.UUID;
 @Service("sysEmailSendRecordService")
 public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendRecordMapper, SysEmailSendRecord> implements SysEmailSendRecordService {
 
-    @Value("${email.from}")
-    private String emailFrom;
-    @Value("${email.username}")
-    private String emailUsername;
-    @Value("${email.password}")
-    private String emailPassword;
-    @Value("${email.hostname}")
-    private String emailHostname;
+
     @Autowired
     private SysEmailSendRecordMapper  sysEmailSendRecordMapper;
     @Override
@@ -41,7 +34,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
             sysEmailSendRecord.setId(UUID.randomUUID().toString());
             sysEmailSendRecord.setMailSubject(emailEntity.getEmailSubject());
             sysEmailSendRecord.setMailContent(emailEntity.getEmailContent());
-            sysEmailSendRecord.setMailFrom(emailFrom);
+            sysEmailSendRecord.setMailFrom(emailEntity.getEmailFrom());
             sysEmailSendRecord.setMailTo(emailEntity.getEmailTo());
             sysEmailSendRecord.setSendStatus(emailEntity.getSendStatus());
             sysEmailSendRecord.setSendTimes(1);
@@ -54,7 +47,7 @@ public class SysEmailSendRecordServiceImpl extends BaseServiceImpl<SysEmailSendR
                 sysEmailSendRecord.setId(UUID.randomUUID().toString());
                 sysEmailSendRecord.setMailSubject(emailEntity.getEmailSubject());
                 sysEmailSendRecord.setMailContent(emailEntity.getEmailContent());
-                sysEmailSendRecord.setMailFrom(emailFrom);
+                sysEmailSendRecord.setMailFrom(emailEntity.getEmailFrom());
                 sysEmailSendRecord.setMailTo(internetAddress.getAddress());
                 sysEmailSendRecord.setSendStatus(emailEntity.getSendStatus());
                 sysEmailSendRecord.setSendTimes(1);

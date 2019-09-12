@@ -39,6 +39,7 @@ public class EmailSendUtil {
 
     private static final String INVITATION_MESSAGE_TEMPLATE = "尊敬的{0}，{1}已经向您发出邀请，请通过下面网址进行确认邀请。【{2}】";
 
+
     public static void main(String[] args) throws Exception {
         EmailEntity ee = new EmailEntity();
         ee.setEmailContent("测试邮件发送33");
@@ -197,21 +198,15 @@ public class EmailSendUtil {
     /**
      * 通过模板获取发送pfx文件邮件内容
      */
-    public static String getSendPfxHtmlContentFromTemplate(String enterpriseName, String password) {
+    public static String getSendPfxHtmlContentFromTemplate(Map<String,Object> map,String templateName) {
         try {
             Configuration configuration = new Configuration(Configuration.VERSION_2_3_0);
             configuration.setTemplateLoader(new ClassTemplateLoader(EmailSendUtil.class, TEMPLATE_PATH));
             configuration.setEncoding(Locale.getDefault(), "UTF-8");
             configuration.setDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
-            Map<Object, Object> parameters = new HashMap<Object, Object>();
-            parameters.put("enterpriseName", enterpriseName);
-            parameters.put("password", password);
-
-            Template template = configuration.getTemplate(SEND_PFX_TEMPLATE_NAME);
+            Template template = configuration.getTemplate(templateName);
             StringWriter stringWriter = new StringWriter();
-            template.process(parameters, stringWriter);
+            template.process(map, stringWriter);
             return stringWriter.toString();
         } catch (Exception e) {
             logger.error(e.getMessage());

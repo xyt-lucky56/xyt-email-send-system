@@ -6,10 +6,13 @@ import com.xyt.email.service.SysEmailSendRecordService;
 import com.xyt.utils.EmailSendUtil;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lmh
@@ -21,8 +24,28 @@ public class SysEmailSendRecordController {
     @Autowired
     private SysEmailSendRecordService sysEmailSendRecordService;
 
+    @Value("${email.from}")
+    private String emailFrom;
+    @Value("${email.username}")
+    private String emailUsername;
+    @Value("${email.password}")
+    private String emailPassword;
+    @Value("${email.hostname}")
+    private String emailHostname;
+
     @PostMapping("/email/send")
-    public void sendEmail(EmailEntity emailEntity)throws Exception{
+    public void sendEmail(String emailTo,String templateName)throws Exception{
+        EmailEntity emailEntity=new EmailEntity();
+        emailEntity.setEmailTo(emailTo);
+        Map map=new HashMap();
+        map.put("emaileTo",emailTo);
+        String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
+        emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
+        emailEntity.setEmailFrom(emailFrom);
+        emailEntity.setEmailUserName(emailUsername);
+        emailEntity.setHostName(emailHostname);
+        emailEntity.setPassWord(emailPassword);
+//        目前没写subject
         try{
             EmailSendUtil.sendHtmlEmailToUsers(emailEntity);
             emailEntity.setSendStatus(1);
