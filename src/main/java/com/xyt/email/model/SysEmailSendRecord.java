@@ -20,12 +20,6 @@ public class SysEmailSendRecord extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value="主键")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private String id;//主键
-	
 	@ApiModelProperty(value="邮件模板编号")
 	@Column(name = "mailTempleteId")
 	private String mailTempleteId;//邮件模板编号
@@ -61,18 +55,6 @@ public class SysEmailSendRecord extends BaseEntity {
 	@ApiModelProperty(value="创建时间")
 	@Column(name = "workDate")
 	private java.util.Date workDate;//创建时间
-
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getMailTempleteId() {
 		return mailTempleteId;
