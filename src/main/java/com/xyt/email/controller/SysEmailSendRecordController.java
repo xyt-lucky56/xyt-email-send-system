@@ -37,7 +37,6 @@ public class SysEmailSendRecordController {
     public void sendEmail(@RequestParam("emailToUser") String emailToUser,@RequestParam("templateName") String templateName)throws Exception{
         EmailEntity emailEntity=new EmailEntity();
         Map map=new HashMap();
-
         switch (templateName){
             case "forgetPassword":
                 emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
@@ -72,42 +71,40 @@ public class SysEmailSendRecordController {
     @PostMapping("/email/sendToUsers")
     public void sendEmails(@RequestParam("emailToUsers") List<String> emailToUsers,@RequestParam("templateName") String templateName)throws Exception{
         EmailEntity emailEntity=new EmailEntity();
-        List<InternetAddress> addressList=new ArrayList<>();
-        InternetAddress internetAddress=new InternetAddress();
         for(String address:emailToUsers){
-            internetAddress.setAddress(address);
-            addressList.add(internetAddress);
+            emailEntity.setEmailTo(address);
+            Map map=new HashMap();
+            map.put("emaileTo",address);
+            String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
+            emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
+            emailEntity.setEmailFrom(emailFrom);
+            emailEntity.setEmailUserName(emailUsername);
+            emailEntity.setHostName(emailHostname);
+            emailEntity.setPassWord(emailPassword);
+            emailEntity.setMailTempleteId(templateName);
+            switch (templateName){
+                case "forgetPassword":
+                    emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
+                    break;
+                case "registerUser":
+                    emailEntity.setEmailSubject(SysEmailSendRecord.registerUser);
+                    break;
+                default:
+                    break;
+            }
+            try{
+                EmailSendUtil.sendHtmlEmail(emailEntity);
+                emailEntity.setSendStatus(1);
+                logger.info("成功");
+            }catch (EmailException ex){
+                emailEntity.setErrorMsg(ex.toString());
+                emailEntity.setSendStatus(0);
+                logger.info("失败,失败信息为{}",ex);
+            }
+            sysEmailSendRecordService.saveLog(emailEntity);
         }
-        emailEntity.setEmailToUsers(addressList);
-        Map map=new HashMap();
-        map.put("emaileTo",emailToUsers);
-        String sendPfxHtmlContentFromTemplate = EmailSendUtil.getSendPfxHtmlContentFromTemplate(map, templateName);
-        emailEntity.setEmailContent(sendPfxHtmlContentFromTemplate);
-        emailEntity.setEmailFrom(emailFrom);
-        emailEntity.setEmailUserName(emailUsername);
-        emailEntity.setHostName(emailHostname);
-        emailEntity.setPassWord(emailPassword);
-        emailEntity.setMailTempleteId(templateName);
-        switch (templateName){
-            case "forgetPassword":
-                emailEntity.setEmailSubject(SysEmailSendRecord.forgetPassword);
-                break;
-            case "registerUser":
-                emailEntity.setEmailSubject(SysEmailSendRecord.registerUser);
-                break;
-            default:
-                break;
-        }
-        try{
-            EmailSendUtil.sendHtmlEmailToUsers(emailEntity);
-            emailEntity.setSendStatus(1);
-            logger.info("成功");
-        }catch (EmailException ex){
-            emailEntity.setErrorMsg(ex.toString());
-            emailEntity.setSendStatus(0);
-            logger.info("失败,失败信息为{}",ex);
-        }
-        sysEmailSendRecordService.saveLog(emailEntity);
+
+
     }
 
 
