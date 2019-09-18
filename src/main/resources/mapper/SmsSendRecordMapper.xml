@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyt.sms.dao.SmsSendRecordDao">
+    <resultMap id="ResultPerMap" type="com.xyt.sms.model.SmsEntity">
+        <id column="id" property="id" jdbcType="VARCHAR"/><!-- 主键自增 -->
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/><!-- 手机号 -->
+        <result column="mobileCode" property="mobileCode" jdbcType="VARCHAR"/><!-- 验证码 -->
+        <result column="sendtime" property="sendtime" jdbcType="TIMESTAMP"/><!-- 发送时间 -->
+        <result column="sendAddressIp" property="sendAddressIp" jdbcType="VARCHAR"/><!-- 发送地址ip -->
+        <result column="sendState" property="sendState" jdbcType="INTEGER"/><!-- 发送结果状态 -->
+        <result column="smsTemplete" property="smsTemplete" jdbcType="VARCHAR"/><!-- 短信模板Code -->
+        <result column="vouType" property="vouType" jdbcType="INTEGER"/><!-- 业务类型 -->
+    </resultMap>
+
+    <insert id="saveSendSmsLogs" parameterType="com.xyt.sms.model.SmsEntity">
+        insert into inf_sms values (null,#{mobile},#{mobileCode},#{sendtime},#{sendAddressIp},#{sendState},#{smsTemplete},#{vouType})
+    </insert>
+
+    <select id="getMobileCode" resultMap="ResultPerMap">
+        select *
+        from
+        inf_sms
+        where
+        mobile =#{phoneNumber}
+        order by sendtime DESC
+        limit 0,1
+    </select>
+
+    <select id="getBlackIps" resultType="java.util.List">
+        select sendAddressIp
+        from
+        inf_sms
+        group by sendAddressIp
+        having count(sendAddressIp) >=20
+    </select>
+
+    <delete id="deleteOutOfDateLogs" parameterType="java.util.Date">
+        delete from inf_sms where  <![CDATA[DATE_FORMAT(sendTime,'%Y-%m-%d')<= DATE_FORMAT(#{date},'%Y-%m-%d')]]>
+    </delete>
+</mapper>
