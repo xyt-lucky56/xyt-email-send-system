@@ -38,7 +38,7 @@ public class CookieController {
             cookie.setDomain(myOrigin);
             cookie.setHttpOnly(false);
             response.addCookie(cookie);
-            map.put("超时时间",2);
+            map.put("超时时间(秒)",2*60);
         }
         return map;
     }

@@ -44,18 +44,16 @@ public class SmsSendUtil {
             request.putQueryParameter("TemplateCode", "SMS_167735348");
         }
         request.putQueryParameter("TemplateParam", "{\"code\":\""+code+"\"}");
-        Boolean flag=true;
+        Boolean flag=false;
         try {
             CommonResponse response = client.getCommonResponse(request);
-            if(response.getData().contains("isv.AMOUNT_NOT_ENOUGH")){
-                logger.info("账户余额不足,请充值!");
-                flag=false;
+            if(response.getData().contains("OK")){
+                flag=true;
             }
+            logger.info("响应消息:{}",response.getData());
         } catch (ServerException e) {
-            flag=false;
             logger.info(e.getMessage());
         } catch (ClientException e) {
-            flag=false;
             logger.info(e.getMessage());
         }
         return flag;
